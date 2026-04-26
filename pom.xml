@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.backline.test</groupId>
+    <artifactId>maven-jfrog-private-test</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>Maven JFrog Private-Artifact Test</name>
+    <description>
+        BKLN-2092 end-to-end test repo. Depends on com.backline.test:demo-lib:1.0.0
+        which lives in the backlineai.jfrog.io maven-test virtual repo. demo-lib
+        transitively pulls in log4j-core 2.14.1 (CVE-2021-44228, Log4Shell), so
+        a Trivy/SCA scan of this project surfaces a CRITICAL finding that Backline
+        SCA Planning will try to remediate. Resolving demo-lib's effective POM
+        requires authenticating against JFrog — the runner's
+        JFrogRegistryMavenPackageRegistryHandler injects ~/.m2/settings.xml
+        with a Bearer token, then mvn / Gradle resolve through the maven-test
+        virtual repo.
+    </description>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.backline.test</groupId>
+            <artifactId>demo-lib</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+</project>
