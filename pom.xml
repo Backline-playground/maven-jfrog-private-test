@@ -28,11 +28,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- Scoped override: demo-lib's own POM pins log4j-core to 2.17.1 (still
+                 vulnerable, CVE-2021-45105 fixed in 2.17.1 but later CVEs require
+                 2.25.4). demo-lib has no available version beyond 2.0.0 that brings a
+                 newer log4j-core, so we pin the vulnerable library's own artifact here. -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.25.4</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.backline.test</groupId>
             <artifactId>demo-lib</artifactId>
-            <version>1.0.0</version>
+            <version>2.0.0</version>
         </dependency>
     </dependencies>
 </project>
