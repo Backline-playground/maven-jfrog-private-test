@@ -28,6 +28,24 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- Scoped override: demo-lib:1.0.0 transitively pulls log4j-core 2.14.1
+                 (CVE-2021-44228, Log4Shell). No available version of demo-lib within
+                 its current major (1.x) brings in a fixed log4j-core, and the only
+                 other published demo-lib version (2.0.0) only raises it to 2.17.1,
+                 which is still below the required fix floor. Force log4j-core to the
+                 patched 2.25.4 (same major line, GA release) via a scoped
+                 dependencyManagement pin, scoped only to the vulnerable library's own
+                 artifact. -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.25.4</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.backline.test</groupId>
